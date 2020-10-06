@@ -1,6 +1,8 @@
 package com.server.game.router.RouterServer.process;
 
-import org.springframework.context.annotation.Bean;
+import com.server.game.router.RouterServer.service.ClientService;
+import com.server.game.router.RouterServer.service.LobbyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +13,10 @@ public abstract class FactoryMessage {
     protected String[] data;
 
     protected String sessionId;
+
+    protected ClientService clientService;
+
+    protected LobbyService lobbyService;
 
     public static FactoryMessage getMessage(String[] data, String sessionId){
 
@@ -30,4 +36,9 @@ public abstract class FactoryMessage {
     }
 
     public abstract String process() throws Exception;
+
+    public void supplyService(ClientService clientService , LobbyService lobbyService){
+        this.lobbyService = lobbyService;
+        this.clientService = clientService;
+    }
 }

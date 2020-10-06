@@ -1,5 +1,4 @@
 package com.server.game.router.RouterServer.config;
-
 /**
  * Created by jose eduardo on 9/29/2020.
  */
@@ -7,9 +6,13 @@ import com.server.game.router.RouterServer.process.ConnectToLobbyMessage;
 import com.server.game.router.RouterServer.process.CreateLobbyFactoryMessage;
 import com.server.game.router.RouterServer.process.FactoryMessage;
 import com.server.game.router.RouterServer.process.SimpleContentMessage;
-import com.server.game.router.RouterServer.service.ConnectionServiceImpl;
+import com.server.game.router.RouterServer.service.ClientService;
+import com.server.game.router.RouterServer.service.ConnectionService;
+import com.server.game.router.RouterServer.service.LobbyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -19,15 +22,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class ServerWebSocketHandler extends TextWebSocketHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerWebSocketHandler.class);
 
-//    private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
-
     private final HashMap< String, Set<WebSocketSession>> lobbySessionListener = new HashMap<>();
 
-    private ConnectionServiceImpl connectionService = new ConnectionServiceImpl() ;
+    @Autowired
+    private ConnectionService connectionService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private LobbyService lobbyService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -40,13 +49,11 @@ public class ServerWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-
         LOGGER.info("Someone has disconnect from the server....");
-
         String lobby = connectionService.NotifySessionDisconnection(session);
-
-        lobbySessionListener.get(lobby).remove(session);
-
+        if(lobby != null){
+            lobbySessionListener.get(lobby).remove(session);
+        }
         super.afterConnectionClosed(session, status);
     }
 
@@ -64,7 +71,7 @@ public class ServerWebSocketHandler extends TextWebSocketHandler {
         }
 
         FactoryMessage msg = FactoryMessage.getMessage(data, session.getId());
-
+        msg.supplyService(clientService, lobbyService);
         String response = (msg != null) ?msg.process() : null;
 
         LOGGER.info("Response fro process: "+response);

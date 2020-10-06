@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class LobbyServiceImpl implements LobbyService{
 
     @Override
     public Lobby createGameLobby(Lobby lobby) {
-        logger.info("entering in method  createGameLobby");
+        logger.info("entering in method createGameLobby");
         logger.info("Param: "+ lobby);
         if(lobby.getId() != null && lobby.getId() == 0){
             lobby.setId(null);
@@ -33,7 +32,7 @@ public class LobbyServiceImpl implements LobbyService{
 
     @Override
     public List<Lobby> avaliableLobby() {
-        logger.info("entering in method  avaliableLobby");
+        logger.info("entering in method avaliableLobby");
         List<Lobby> list = new ArrayList<>();
         logger.info("returning list count"+ list.size());
         lobbyRepository.findAll().forEach(ind ->{
@@ -60,9 +59,10 @@ public class LobbyServiceImpl implements LobbyService{
 
     @Override
     public Lobby getLobbyCode(String lobbyCode) {
-        logger.info("entering in method  getLobbyCode");
+        logger.info("entering in method getLobbyCode");
         logger.info("Param lobbyCode: "+ lobbyCode);
         Lobby lob = lobbyRepository.findByLobbyCode(lobbyCode);
         return lob;
     }
+
 }

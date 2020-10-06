@@ -43,7 +43,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<UserSession> serverClients() {
-        logger.info("entering in method  serverClients");
+        logger.info("entering in method serverClients");
         List<UserSession> list = new ArrayList<>();
         logger.info("returning list count"+ list.size());
         clientRepository.findAll().forEach(ind ->{
@@ -54,7 +54,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(String sessionId) {
-
+        logger.info("entering in method  deleteClient");
+        logger.info("Param: "+ sessionId);
         UserSession found = clientRepository.findBySessionId(sessionId);
         if(found != null){
             clientRepository.delete(found);

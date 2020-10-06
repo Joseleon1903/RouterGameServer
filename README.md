@@ -5,7 +5,7 @@ Game server for Heroku service with Spring java webSocket.
 
 ## router web socket url connection 
 
-    url: ws://localhost:8080/lobby-Manager
+    url: ws://localhost:8080/lobby-manager
 
 ## create a lobby message 
 

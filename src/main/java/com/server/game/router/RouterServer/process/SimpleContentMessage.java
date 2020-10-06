@@ -1,8 +1,8 @@
 package com.server.game.router.RouterServer.process;
 
 import com.server.game.router.RouterServer.entity.UserSession;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**\
  *   SimpleContentMessage common message from a player lobby
@@ -16,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
  */
 public class SimpleContentMessage extends FactoryMessage {
 
+    Logger logger = LoggerFactory.getLogger(SimpleContentMessage.class);
+
     public SimpleContentMessage(String[] data, String sessionId){
         this.data = data;
         this.sessionId = sessionId;
@@ -24,33 +26,37 @@ public class SimpleContentMessage extends FactoryMessage {
     @Override
     public String process() throws Exception {
 
+        logger.info("Entering in method process");
+        logger.info("execute SimpleContentMessage");
+        logger.info("session Id "+ sessionId);
+
         //validation content data
         String origin = data[0];
         String lobbyCode = data[2];
 
         //validate origin
         if(!origin.equalsIgnoreCase("CLIENT")){
+            logger.info("error invalid message origin");
             return "500:INVALIDORIGIN";
         }
 
         //validate lobby
         boolean validLobby = false;
-
-        RestTemplate restTemplate = new RestTemplate();
-        String getClientResourceUrl = "http://localhost:8080/client?sessionId="+ sessionId;
-        ResponseEntity<UserSession> response = restTemplate.getForEntity(getClientResourceUrl , UserSession.class);
+        UserSession response = clientService.findBySession(sessionId);
 
         //validate session id
-        if(response.getBody() == null){
+        if(response == null){
+            logger.info("error session is invalid");
             return "500:INVALIDSESSION";
         }
 
         //validate lobby code
-        if(response.getBody().getLobbyClient().equalsIgnoreCase(lobbyCode)) {
+        if(response.getLobbyClient().equalsIgnoreCase(lobbyCode)) {
             validLobby = true;
         }
 
         if(!validLobby){
+            logger.info("error lobby is invalid");
             return "500:INVALIDLOBBY";
         }
 
