@@ -52,7 +52,7 @@
 
     function connect() {
         /*<![CDATA[*/
-        var url = /*[['ws://'+${#httpServletRequest.serverName}+':'+${#httpServletRequest.serverPort}+@{/web-socket}]]*/ 'ws://localhost:8080/lobby-Manager';
+        var url = /*[['ws://'+${#httpServletRequest.serverName}+':'+${#httpServletRequest.serverPort}+@{/web-socket}]]*/ 'ws://localhost:8080/lobby-manager';
         /*]]>*/
         ws = new WebSocket(url);
         ws.onopen = function () {
