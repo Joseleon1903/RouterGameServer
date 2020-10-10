@@ -76,6 +76,11 @@ public class ConnectToLobbyMessage extends FactoryMessage {
         //add client to lobby count
         UserSession response2 = clientService.registerClient(cl);
 
+        //if lobby is full after add new play start Game
+        if(refLobby.getPlayerCount() == refLobby.getCapacity()){
+            return "SERVER|202LB|START";
+        }
+
         if(response2 != null){
             logger.info("successful connect to lobby");
             return "SERVER|202LB|OK";

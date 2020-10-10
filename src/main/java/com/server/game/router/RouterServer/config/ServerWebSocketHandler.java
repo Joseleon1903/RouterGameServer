@@ -54,6 +54,16 @@ public class ServerWebSocketHandler extends TextWebSocketHandler {
         if(lobby != null){
             lobbySessionListener.get(lobby).remove(session);
         }
+
+        if(lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() > 0){
+            for (WebSocketSession ses: lobbySessionListener.get(lobby)) {
+                String disconectMessage= "SERVER|102LB|CONNECTIONLOST";
+                TextMessage messageOut = new TextMessage(disconectMessage);
+                ses.sendMessage(messageOut);
+            }
+        }else if (lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() == 0){
+            lobbySessionListener.remove(lobby);
+        }
         super.afterConnectionClosed(session, status);
     }
 
