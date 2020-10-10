@@ -38,3 +38,14 @@ Game server for Heroku service with Spring java webSocket.
     *    Origin | operation code| lobby code|  data   |   .....
     *
     *   CLIENT&102LB&QUEIO&data
+    
+ ## response message to client from server lobby
+ 
+    *   lost connection of player 
+    *
+    *   content:
+    *
+    *    0        1        2       
+    *    Origin| operation code| message
+    *
+    *   SERVER|102LB|CONNECTIONLOST
