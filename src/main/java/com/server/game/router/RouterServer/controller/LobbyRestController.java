@@ -36,7 +36,6 @@ public class LobbyRestController {
         return ResponseEntity.ok(lobbyService.getLobbyCode(lobbyCode));
     }
 
-
     @DeleteMapping("/delete/lobby")
     ResponseEntity deleteLobby(@RequestParam("lobbyCode") String lobbyCode) {
         lobbyService.deleteLobby(lobbyCode);

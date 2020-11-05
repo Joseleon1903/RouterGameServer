@@ -14,11 +14,20 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
-    private ServerWebSocketHandler serverWebSocketHandler;
+    private ServerCheckersWebSocketHandler serverCheckersWebSocketHandler;
+
+    @Autowired
+    private ServerChessWebSocketHandler serverChessWebSocketHandler;
+
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(serverWebSocketHandler, "/lobby-manager").setAllowedOrigins("*");
+
+        // handler checker lobby
+        webSocketHandlerRegistry.addHandler(serverCheckersWebSocketHandler, "/checker/lobby-manager").setAllowedOrigins("*");
+
+        // handler chess lobby
+        webSocketHandlerRegistry.addHandler(serverChessWebSocketHandler, "/chess/lobby-manager").setAllowedOrigins("*");
     }
 
 }
