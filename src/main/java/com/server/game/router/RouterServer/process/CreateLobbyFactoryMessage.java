@@ -2,6 +2,7 @@ package com.server.game.router.RouterServer.process;
 
 import com.server.game.router.RouterServer.entity.Lobby;
 import com.server.game.router.RouterServer.entity.UserSession;
+import com.server.game.router.RouterServer.enums.GameLobbyType;
 import com.server.game.router.RouterServer.enums.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +13,10 @@ import java.util.List;
  *
  *   content:
  *
- *    0             1               2          3             4             5                6
- *    Origin | operation code| lobby type| lobby code| lobby capacity| lobby Identifier| lobby status
+ *    0             1               2          3        4             5                6            7           8             9
+ *    Origin | operation code| lobby type| lobby code|lobby Map| lobby time|  lobby capacity| gametype lobby Identifier| lobby status
  *
- *   SERVER&201LB&Private&QUEIO&2&jdjd:ksjd:kdjd:90&Online
+ *   SERVER&201LB&Private&QUEIO&city&day&2&CHECKER&jdjd:ksjd:kdjd:90&Online
  */
 public class CreateLobbyFactoryMessage extends FactoryMessage {
 
@@ -49,16 +50,21 @@ public class CreateLobbyFactoryMessage extends FactoryMessage {
         }
 
         //creation of a new game lobby
-        int capacity = Integer.parseInt(data[4]);
+        int capacity = Integer.parseInt(data[6]);
         int playerCount =  0;
 
         Lobby lb = new Lobby();
+        lb.setLobbyMap(data[4]);
+        lb.setLobbyTime(data[5]);
         lb.setLobbyCode(data[3]);
         lb.setCapacity(capacity);
         lb.setPlayerCount(playerCount);
-        lb.setStatus(data[6]);
+        lb.setStatus(data[9]);
         lb.setType(data[2]);
         lb.setSessionIdentifier(sessionId);
+        lb.setGameLobby(data[7]);
+
+        lb.setGameLobby(GameLobbyType.CHECKER);
 
         lobbyService.createGameLobby(lb);
 

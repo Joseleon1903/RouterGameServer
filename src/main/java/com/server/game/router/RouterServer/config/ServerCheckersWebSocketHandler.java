@@ -23,9 +23,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class ServerWebSocketHandler extends TextWebSocketHandler {
+public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServerWebSocketHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerCheckersWebSocketHandler.class);
 
     private final HashMap< String, Set<WebSocketSession>> lobbySessionListener = new HashMap<>();
 

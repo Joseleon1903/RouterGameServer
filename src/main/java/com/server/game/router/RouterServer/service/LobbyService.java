@@ -15,4 +15,8 @@ public interface LobbyService {
     void deleteLobby(String lobbyCode);
 
     Lobby getLobbyCode(String lobbyCode);
+
+    List<Lobby> getPublicCheckersLobbyAvaliabe(int count);
+
+    void setPublicCheckersLobbyTestData();
 }
