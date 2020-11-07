@@ -18,6 +18,12 @@ public class UserSession {
 
     private String playerName;
 
+    private String playerId;
+
+    private String nationality;
+
+    private String playerCode;
+
     private Boolean isHost;
 
     private String sessionId;

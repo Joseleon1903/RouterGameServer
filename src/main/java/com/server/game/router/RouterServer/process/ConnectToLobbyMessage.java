@@ -10,8 +10,8 @@ import java.util.List;
  *   ConnectToLobbyMessage connect client to Lobby
  *
  *
- *    0             1               2          3             4             5           6
- *    Origin | operation code| lobby type| lobby code|  playeraName| player Session| isHost
+ *    0             1               2          3             4           5           6                  7            8            9
+ *    Origin | operation code| lobby type| lobby code| playerCode | playeraName| playertId | playernationality |player Session| isHost
  *
  *   CLIENT&202LB&Private&QUEIO&mario01&jdhfsdfkdjjdssd88&0
  */
@@ -35,7 +35,7 @@ public class ConnectToLobbyMessage extends FactoryMessage {
         String lobbyCode = data[3];
         logger.info("lobby to connect: "+ lobbyCode);
 
-        boolean isHost = (Integer.parseInt(data[6]) == 1) ? true : false;
+        boolean isHost = (Integer.parseInt(data[9]) == 1) ? true : false;
         boolean validLobby = false;
 
         Lobby refLobby= null;
@@ -56,9 +56,12 @@ public class ConnectToLobbyMessage extends FactoryMessage {
 
         UserSession cl = new UserSession();
         cl.setSessionId(sessionId);
-        cl.setPlayerName(data[4]);
+        cl.setPlayerName(data[5]);
         cl.setIsHost(isHost);
         cl.setLobbyClient(lobbyCode);
+        cl.setPlayerId(data[6]);
+        cl.setNationality(data[7]);
+        cl.setPlayerCode(data[4]);
 
         //validation lobby can add more player
         if(refLobby.getPlayerCount() == refLobby.getCapacity()){
@@ -78,7 +81,17 @@ public class ConnectToLobbyMessage extends FactoryMessage {
 
         //if lobby is full after add new play start Game
         if(refLobby.getPlayerCount() == refLobby.getCapacity()){
-            return "SERVER|202LB|START";
+
+            //prepare information for player one
+            UserSession playerOne = clientService.findByPlayerCode("PL1", lobbyCode);
+            String playerOneInfo = "|PL1|"+playerOne.getPlayerName()+"|"+
+                                     playerOne.getPlayerId()+"|"+  playerOne.getNationality();
+
+            UserSession playerTwo = clientService.findByPlayerCode("PL2", lobbyCode);
+            String playerTwoInfo = "|PL2|"+playerTwo.getPlayerName()+"|"+
+                    playerTwo.getPlayerId()+"|"+  playerTwo.getNationality();
+
+            return "SERVER|202LB|LOBBYREADY"+ playerOneInfo+playerTwoInfo;
         }
 
         if(response2 != null){

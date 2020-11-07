@@ -9,4 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface ClientRepository  extends CrudRepository<UserSession, Long>{
 
     UserSession findBySessionId(String sessionId);
+
+    UserSession findByPlayerCodeAndLobbyClient(String playerCode, String lobbyClient);
+
 }

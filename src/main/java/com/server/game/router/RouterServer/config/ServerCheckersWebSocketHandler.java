@@ -2,10 +2,8 @@ package com.server.game.router.RouterServer.config;
 /**
  * Created by jose eduardo on 9/29/2020.
  */
-import com.server.game.router.RouterServer.process.ConnectToLobbyMessage;
-import com.server.game.router.RouterServer.process.CreateLobbyFactoryMessage;
-import com.server.game.router.RouterServer.process.FactoryMessage;
-import com.server.game.router.RouterServer.process.SimpleContentMessage;
+
+import com.server.game.router.RouterServer.process.*;
 import com.server.game.router.RouterServer.service.ClientService;
 import com.server.game.router.RouterServer.service.ConnectionService;
 import com.server.game.router.RouterServer.service.LobbyService;
@@ -17,6 +15,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -108,9 +107,35 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
                     e.printStackTrace();
                 }
             });
-        }else if(msg instanceof SimpleContentMessage){
+        }else if(response != null && msg instanceof StartGameMessage){
+
+            Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[3]);
+            lobbysessions.forEach(webSocketSession -> {
+                try {
+                    TextMessage messageOut = new TextMessage(response);
+                    webSocketSession.sendMessage(messageOut);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else if(msg instanceof RematchGameMessage){
+
             Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
 
+            lobbysessions.forEach(webSocketSession -> {
+                try {
+                    TextMessage messageOut = new TextMessage(response);
+                    //for duplicate message omit current session
+                    if(webSocketSession.getId() != session.getId()){
+                        webSocketSession.sendMessage(messageOut);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }else if(msg instanceof SimpleContentMessage || msg instanceof RematchGameMessage){
+            Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
 
             lobbysessions.forEach(webSocketSession -> {
                 try {

@@ -42,6 +42,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public UserSession findByPlayerCode(String playerCode, String lobbyCode) {
+        return clientRepository.findByPlayerCodeAndLobbyClient(playerCode, lobbyCode);
+    }
+
+    @Override
     public List<UserSession> serverClients() {
         logger.info("entering in method serverClients");
         List<UserSession> list = new ArrayList<>();
