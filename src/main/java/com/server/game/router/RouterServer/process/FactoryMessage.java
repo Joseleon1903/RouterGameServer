@@ -21,11 +21,19 @@ public abstract class FactoryMessage {
     public static FactoryMessage getMessage(String[] data, String sessionId){
 
         //message 201LB create a lobby
-        if(data[0].equalsIgnoreCase("Server")  && data[1].equalsIgnoreCase("201LB")){
+        if(data[0].equalsIgnoreCase("SERVER")  && data[1].equalsIgnoreCase("201LB")){
             return new CreateLobbyFactoryMessage(data, sessionId);
         }
+        if(data[0].equalsIgnoreCase("SERVER")  && data[1].equalsIgnoreCase("202LB")){
+            return new StartGameMessage(data, sessionId);
+        }
+
         if(data[0].equalsIgnoreCase("CLIENT")  && data[1].equalsIgnoreCase("202LB")){
             return new ConnectToLobbyMessage(data, sessionId);
+        }
+
+        if(data[0].equalsIgnoreCase("CLIENT")  && data[1].equalsIgnoreCase("300LB")){
+            return new RematchGameMessage(data, sessionId);
         }
 
         if(data[0].equalsIgnoreCase("CLIENT") || data[0].equalsIgnoreCase("SERVER")

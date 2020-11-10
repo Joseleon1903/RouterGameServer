@@ -16,7 +16,7 @@ import java.util.List;
  *    0             1               2          3        4             5                6            7           8             9
  *    Origin | operation code| lobby type| lobby code|lobby Map| lobby time|  lobby capacity| gametype lobby Identifier| lobby status
  *
- *   SERVER&201LB&Private&QUEIO&city&day&2&CHECKER&jdjd:ksjd:kdjd:90&Online
+ *    CLIENT&202LB&Public&GYTQE&PL2&GuestPlayer051072&8846074&Dominican Republic&UN:IDENT:FIER&0
  */
 public class CreateLobbyFactoryMessage extends FactoryMessage {
 
