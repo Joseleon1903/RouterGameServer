@@ -1,6 +1,9 @@
 package com.server.game.router.RouterServer.service;
 
 import com.server.game.router.RouterServer.entity.Lobby;
+import com.server.game.router.RouterServer.enums.GameLobbyType;
+import com.server.game.router.RouterServer.enums.LobbyType;
+
 import java.util.List;
 
 /**
@@ -16,7 +19,7 @@ public interface LobbyService {
 
     Lobby getLobbyCode(String lobbyCode);
 
-    List<Lobby> getPublicCheckersLobbyAvaliabe(int count);
+    List<Lobby> getPublicCheckersLobbyAvaliabe(int count, String type);
 
-    void setPublicCheckersLobbyTestData();
+    void setPublicCheckersLobbyTestData(String type);
 }

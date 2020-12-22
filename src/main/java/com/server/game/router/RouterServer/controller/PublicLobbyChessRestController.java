@@ -8,37 +8,39 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
- * Created by jose eduardo on 11/3/2020.
+ * Created by jose eduardo on 12/19/2020.
  */
 @RestController
-public class PublicLobbyCheckerRestController {
+public class PublicLobbyChessRestController {
 
-    Logger logger = LoggerFactory.getLogger(PublicLobbyCheckerRestController.class);
+    Logger logger = LoggerFactory.getLogger(PublicLobbyChessRestController.class);
 
     @Autowired
     private LobbyService lobbyService;
 
-    @GetMapping("/checker/lobby")
+    @GetMapping("/chess/lobby")
     ResponseEntity<List<Lobby>> getServerPublicLobby(@RequestParam("count") int count) {
-        List<Lobby> publicLobbyList = lobbyService.getPublicCheckersLobbyAvaliabe(count, GameLobbyType.CHECKER);
+        List<Lobby> publicLobbyList = lobbyService.getPublicCheckersLobbyAvaliabe(count, GameLobbyType.CHESS);
         return ResponseEntity.ok(publicLobbyList);
     }
 
-    @GetMapping("/checker/lobby/testdata")
+    @GetMapping("/chess/lobby/testdata")
     ResponseEntity setServerPublicLobbyTestData() {
-       lobbyService.setPublicCheckersLobbyTestData(GameLobbyType.CHECKER);
-       return ResponseEntity.ok("OK");
+        lobbyService.setPublicCheckersLobbyTestData(GameLobbyType.CHESS);
+        return ResponseEntity.ok("OK");
     }
 
-    @PostMapping("/checker/lobby/testdata")
+    @PostMapping("chess/lobby/testdata")
     ResponseEntity setServerPublicLobbyTestData(@RequestBody Lobby lobby) {
         if(lobby != null){
             lobbyService.createGameLobby(lobby);
         }
         return ResponseEntity.ok("OK");
     }
+
 
 }

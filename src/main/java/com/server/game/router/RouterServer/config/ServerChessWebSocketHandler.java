@@ -1,9 +1,6 @@
 package com.server.game.router.RouterServer.config;
 
-import com.server.game.router.RouterServer.process.ConnectToLobbyMessage;
-import com.server.game.router.RouterServer.process.CreateLobbyFactoryMessage;
-import com.server.game.router.RouterServer.process.FactoryMessage;
-import com.server.game.router.RouterServer.process.SimpleContentMessage;
+import com.server.game.router.RouterServer.process.*;
 import com.server.game.router.RouterServer.service.ClientService;
 import com.server.game.router.RouterServer.service.ConnectionService;
 import com.server.game.router.RouterServer.service.LobbyService;
@@ -59,9 +56,11 @@ public class ServerChessWebSocketHandler extends TextWebSocketHandler {
 
         if(lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() > 0){
             for (WebSocketSession ses: lobbySessionListener.get(lobby)) {
-                String disconectMessage= "SERVER|102LB|CONNECTIONLOST";
-                TextMessage messageOut = new TextMessage(disconectMessage);
-                ses.sendMessage(messageOut);
+                if(ses.isOpen()) {
+                    String disconectMessage = "SERVER|102LB|CONNECTIONLOST";
+                    TextMessage messageOut = new TextMessage(disconectMessage);
+                    ses.sendMessage(messageOut);
+                }
             }
         }else if (lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() == 0){
             lobbySessionListener.remove(lobby);
@@ -97,6 +96,12 @@ public class ServerChessWebSocketHandler extends TextWebSocketHandler {
 
         }else if(response != null && msg instanceof ConnectToLobbyMessage){
 
+            if(response.contains("BADLOBBYCODE")){
+                TextMessage messageOut = new TextMessage(response);
+                session.sendMessage(messageOut);
+                return;
+            }
+
             if(lobbySessionListener.get(data[3]) != null) {
                 lobbySessionListener.get(data[3]).add(session);
             }
@@ -110,9 +115,35 @@ public class ServerChessWebSocketHandler extends TextWebSocketHandler {
                     e.printStackTrace();
                 }
             });
-        }else if(msg instanceof SimpleContentMessage){
+        }else if(response != null && msg instanceof StartGameMessage){
+
+            Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[3]);
+            lobbysessions.forEach(webSocketSession -> {
+                try {
+                    TextMessage messageOut = new TextMessage(response);
+                    webSocketSession.sendMessage(messageOut);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else if(msg instanceof RematchGameMessage){
+
             Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
 
+            lobbysessions.forEach(webSocketSession -> {
+                try {
+                    TextMessage messageOut = new TextMessage(response);
+                    //for duplicate message omit current session
+                    if(webSocketSession.getId() != session.getId()){
+                        webSocketSession.sendMessage(messageOut);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        } else if(msg instanceof SimpleContentMessage){
+            Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
 
             lobbysessions.forEach(webSocketSession -> {
                 try {

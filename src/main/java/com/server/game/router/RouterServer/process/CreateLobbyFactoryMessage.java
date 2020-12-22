@@ -64,8 +64,6 @@ public class CreateLobbyFactoryMessage extends FactoryMessage {
         lb.setSessionIdentifier(sessionId);
         lb.setGameLobby(data[7]);
 
-        lb.setGameLobby(GameLobbyType.CHECKER);
-
         lobbyService.createGameLobby(lb);
 
         //update connection host of the server

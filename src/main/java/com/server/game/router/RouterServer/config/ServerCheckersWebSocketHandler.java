@@ -56,9 +56,11 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
 
         if(lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() > 0){
             for (WebSocketSession ses: lobbySessionListener.get(lobby)) {
-                String disconectMessage= "SERVER|102LB|CONNECTIONLOST";
-                TextMessage messageOut = new TextMessage(disconectMessage);
-                ses.sendMessage(messageOut);
+                if(ses.isOpen()) {
+                    String disconectMessage = "SERVER|102LB|CONNECTIONLOST";
+                    TextMessage messageOut = new TextMessage(disconectMessage);
+                    ses.sendMessage(messageOut);
+                }
             }
         }else if (lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() == 0){
             lobbySessionListener.remove(lobby);
@@ -93,6 +95,12 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
             session.sendMessage(respone);
 
         }else if(response != null && msg instanceof ConnectToLobbyMessage){
+
+            if(response.contains("BADLOBBYCODE")){
+                TextMessage messageOut = new TextMessage(response);
+                session.sendMessage(messageOut);
+                return;
+            }
 
             if(lobbySessionListener.get(data[3]) != null) {
                 lobbySessionListener.get(data[3]).add(session);
