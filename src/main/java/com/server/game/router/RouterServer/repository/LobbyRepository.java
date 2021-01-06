@@ -15,7 +15,10 @@ public interface LobbyRepository extends CrudRepository<Lobby, Long>{
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Lobby findByLobbyCode(String lobby);
 
+<<<<<<< Updated upstream
     @Lock(LockModeType.PESSIMISTIC_WRITE)
+=======
+>>>>>>> Stashed changes
     @Query(value = "select * From Lobby where type = 'Public' and player_count = 1 and game_lobby =?2 and status = 'Online' ORDER BY id DESC limit ?1 ;"
     , nativeQuery = true)
     List<Lobby> findCheckersLobbysAvalible(int counter, String type);
