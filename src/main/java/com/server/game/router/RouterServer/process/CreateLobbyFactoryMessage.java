@@ -2,22 +2,25 @@ package com.server.game.router.RouterServer.process;
 
 import com.server.game.router.RouterServer.entity.Lobby;
 import com.server.game.router.RouterServer.entity.UserSession;
+import com.server.game.router.RouterServer.enums.GameLobbyType;
 import com.server.game.router.RouterServer.enums.UserType;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.List;
 
 /**\
  *   FactoryMessage Detail for create a lobby
  *
  *   content:
  *
- *    0             1               2          3             4             5                6
- *    Origin | operation code| lobby type| lobby code| lobby capacity| lobby Identifier| lobby status
+ *    0             1               2          3        4             5                6            7           8             9
+ *    Origin | operation code| lobby type| lobby code|lobby Map| lobby time|  lobby capacity| gametype lobby Identifier| lobby status
  *
- *   SERVER&201LB&Private&QUEIO&2&jdjd:ksjd:kdjd:90&Online
+ *    CLIENT&202LB&Public&GYTQE&PL2&GuestPlayer051072&8846074&Dominican Republic&UN:IDENT:FIER&0
  */
 public class CreateLobbyFactoryMessage extends FactoryMessage {
+
+    Logger logger = LoggerFactory.getLogger(CreateLobbyFactoryMessage.class);
 
     public CreateLobbyFactoryMessage(String[] data, String sessionId){
         this.data = data;
@@ -27,56 +30,51 @@ public class CreateLobbyFactoryMessage extends FactoryMessage {
     @Override
     public String process() throws Exception {
 
+        logger.info("Entering in method process");
+        logger.info("execute CreateLobbyFactoryMessage");
+        logger.info("session Id "+ sessionId);
+
         //validate is lobby alredy exist
         Boolean validLobby = false;
 
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = "http://localhost:8080/lobbys";
-        ResponseEntity<Lobby[]> response = restTemplate.getForEntity(fooResourceUrl , Lobby[].class);
-
-        for (Lobby lb: response.getBody()) {
+        List<Lobby> response = lobbyService.avaliableLobby();
+        for (Lobby lb: response) {
             if(lb.getLobbyCode().equalsIgnoreCase(data[3])) {
                 validLobby = true;
             }
         }
 
         if(validLobby){
+            logger.info("Error lobby alredy exist");
             return "ERROR|201LB|ALREADYLOBBY";
         }
 
         //creation of a new game lobby
-        int capacity = Integer.parseInt(data[4]);
+        int capacity = Integer.parseInt(data[6]);
         int playerCount =  0;
 
         Lobby lb = new Lobby();
+        lb.setLobbyMap(data[4]);
+        lb.setLobbyTime(data[5]);
         lb.setLobbyCode(data[3]);
         lb.setCapacity(capacity);
         lb.setPlayerCount(playerCount);
-        lb.setStatus(data[6]);
+        lb.setStatus(data[9]);
         lb.setType(data[2]);
         lb.setSessionIdentifier(sessionId);
+        lb.setGameLobby(data[7]);
 
-        HttpEntity<Lobby> request = new HttpEntity<>(lb);
-        String cResourceUrl
-                = "http://localhost:8080/create/lobby";
-
-        restTemplate.postForObject(cResourceUrl, request, Lobby.class);
+        lobbyService.createGameLobby(lb);
 
         //update connection host of the server
+        UserSession userHost = clientService.findBySession(sessionId);
 
-        //UserSession sessionHost =
-        String getResourceUser = "http://localhost:8080/client?sessionId="+sessionId;
-        ResponseEntity<UserSession> getResponse = restTemplate.getForEntity(getResourceUser , UserSession.class);
-        UserSession userHost = getResponse.getBody();
         userHost.setPlayerName(UserType.LOBBYHOST.getType());
         userHost.setIsHost(true);
         userHost.setLobbyClient(data[3]);
 
-        String UpdateResourceUser = "http://localhost:8080/register/client";
-        HttpEntity<UserSession> requestUpdate = new HttpEntity<>(userHost);
-
-        restTemplate.postForObject(UpdateResourceUser, requestUpdate, UserSession.class);
-
+        clientService.registerClient(userHost);
+        logger.info("lobby successful create");
         return "CLIENT|201LB|OK";
     }
 }

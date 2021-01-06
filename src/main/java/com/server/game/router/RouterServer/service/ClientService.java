@@ -13,6 +13,8 @@ public interface ClientService {
 
     UserSession findBySession(String sessionId);
 
+    UserSession findByPlayerCode(String playerCode, String lobbyCode);
+
     List<UserSession> serverClients();
 
     void deleteClient(String sessionId);

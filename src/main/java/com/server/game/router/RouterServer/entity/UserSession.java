@@ -1,7 +1,6 @@
 package com.server.game.router.RouterServer.entity;
 
 import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +17,12 @@ public class UserSession {
     private Long id;
 
     private String playerName;
+
+    private String playerId;
+
+    private String nationality;
+
+    private String playerCode;
 
     private Boolean isHost;
 

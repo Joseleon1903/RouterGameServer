@@ -28,4 +28,10 @@ public class Lobby {
 
     private String status;
 
+    private String lobbyMap;
+
+    private String lobbyTime;
+
+    private String gameLobby;
+
 }

@@ -1,5 +1,6 @@
 package com.server.game.router.RouterServer.service;
 
+import com.server.game.router.RouterServer.entity.UserSession;
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.websocket.Session;
@@ -11,6 +12,7 @@ public interface ConnectionService {
 
    void NotifySessionConnection(WebSocketSession session);
 
-   String NotifySessionDisconnection(WebSocketSession session);
+   UserSession NotifySessionDisconnection(WebSocketSession session);
 
+   void NotifyLobbyClose(String lobby);
 }
