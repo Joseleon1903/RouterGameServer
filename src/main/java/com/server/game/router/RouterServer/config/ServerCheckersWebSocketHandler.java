@@ -3,6 +3,7 @@ package com.server.game.router.RouterServer.config;
  * Created by jose eduardo on 9/29/2020.
  */
 
+import com.server.game.router.RouterServer.entity.UserSession;
 import com.server.game.router.RouterServer.process.*;
 import com.server.game.router.RouterServer.service.ClientService;
 import com.server.game.router.RouterServer.service.ConnectionService;
@@ -10,6 +11,8 @@ import com.server.game.router.RouterServer.service.LobbyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -21,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Component
 public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
 
@@ -49,21 +53,22 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         LOGGER.info("Someone has disconnect from the server....");
-        String lobby = connectionService.NotifySessionDisconnection(session);
-        if(lobby != null){
-            lobbySessionListener.get(lobby).remove(session);
-        }
 
-        if(lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() > 0){
-            for (WebSocketSession ses: lobbySessionListener.get(lobby)) {
+        UserSession user = connectionService.NotifySessionDisconnection(session);
+        if(user.getLobbyClient() != null && user.getLobbyClient().length() >= 4 && !user.getIsHost() ){
+            lobbySessionListener.get(user.getLobbyClient()).remove(session);
+        }
+        if(lobbySessionListener.get(user.getLobbyClient()) != null && lobbySessionListener.get(user.getLobbyClient()).size() > 0){
+            for (WebSocketSession ses: lobbySessionListener.get(user.getLobbyClient())) {
                 if(ses.isOpen()) {
                     String disconectMessage = "SERVER|102LB|CONNECTIONLOST";
                     TextMessage messageOut = new TextMessage(disconectMessage);
                     ses.sendMessage(messageOut);
                 }
             }
-        }else if (lobbySessionListener.get(lobby) != null && lobbySessionListener.get(lobby).size() == 0){
-            lobbySessionListener.remove(lobby);
+        }else if (lobbySessionListener.get(user.getLobbyClient()) != null && lobbySessionListener.get(user.getLobbyClient()).size() == 0){
+            connectionService.NotifyLobbyClose(user.getLobbyClient());
+            lobbySessionListener.remove(user.getLobbyClient());
         }
         super.afterConnectionClosed(session, status);
     }
