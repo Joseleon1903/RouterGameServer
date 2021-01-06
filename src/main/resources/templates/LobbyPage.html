@@ -51,6 +51,7 @@
         <th scope="col">#</th>
         <th scope="col">session identifier</th>
         <th scope="col">Lobby Code</th>
+        <th scope="col">Game Type</th>
         <th scope="col">Type</th>
         <th scope="col">Connected Player</th>
         <th scope="col">Status</th>
@@ -63,6 +64,7 @@
         <td th:text="${lobby.id}">1</td>
         <td th:text="${lobby.sessionIdentifier}">AKS:09KDD:KSJD:KJK:78</td>
         <td th:text="${lobby.lobbyCode}">QWRTY</td>
+        <td th:text="${lobby.gameLobby}">QWRTY</td>
         <td th:text="${lobby.type}">Private</td>
         <td th:text="${lobby.capacity} + '/' + ${lobby.playerCount}">5/0</td>
         <td th:text="${lobby.status}">Online</td>

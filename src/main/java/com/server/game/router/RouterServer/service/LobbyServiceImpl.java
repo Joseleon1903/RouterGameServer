@@ -2,6 +2,7 @@ package com.server.game.router.RouterServer.service;
 
 import com.server.game.router.RouterServer.entity.Lobby;
 import com.server.game.router.RouterServer.enums.GameLobbyType;
+import com.server.game.router.RouterServer.enums.LobbyType;
 import com.server.game.router.RouterServer.repository.LobbyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,15 +68,16 @@ public class LobbyServiceImpl implements LobbyService{
     }
 
     @Override
-    public List<Lobby> getPublicCheckersLobbyAvaliabe(int count) {
+    public List<Lobby> getPublicCheckersLobbyAvaliabe(int count, String gametype) {
         logger.info("entering in method getPublicCheckersLobbyAvaliabe");
         logger.info("Param count: "+ count);
-        List<Lobby> list =lobbyRepository.findCheckersLobbysAvalible(count);
+        logger.info("Param lobby type: "+ gametype);
+        List<Lobby> list =lobbyRepository.findCheckersLobbysAvalible(count, gametype);
         return list;
     }
 
     @Override
-    public void setPublicCheckersLobbyTestData() {
+    public void setPublicCheckersLobbyTestData(String type) {
 
         Lobby lb1 = new Lobby();
         lb1.setLobbyMap("City");
@@ -86,7 +88,7 @@ public class LobbyServiceImpl implements LobbyService{
         lb1.setStatus("Online");
         lb1.setType("Public");
         lb1.setSessionIdentifier("JDGHDHF:KDJF:DJHFL:SKDDK");
-        lb1.setGameLobby(GameLobbyType.CHECKER);
+        lb1.setGameLobby(type);
 
         lobbyRepository.save(lb1);
     }
