@@ -18,7 +18,7 @@ public class RouterServerVersionController {
     ResponseEntity<String> getServerVersion() {
         logger.info("Entering in resources: /router/server/version".toUpperCase());
         logger.info("version:0.0.1".toUpperCase());
-        return ResponseEntity.ok("version:0.0.1");
+        return ResponseEntity.ok("version:0.0.2-stable");
     }
 
 }
