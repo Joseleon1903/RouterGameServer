@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  *   content:
  *
  *    0             1               2         3           4        continue
- *    Origin | operation code| lobby code|  data   |   .....
+ *    Origin | operation code| lobby code| game type |  data   |   .....
  *
  *   CLIENT&102LB&QUEIO&data
  */
