@@ -13,7 +13,6 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -149,7 +148,7 @@ public class ServerChessWebSocketHandler extends TextWebSocketHandler {
                 }
             });
 
-        } else if(msg instanceof SimpleContentMessage){
+        } else if(msg instanceof SimpleContentMessage || msg instanceof ChessCheckMateMessage || msg instanceof ChessPromotePieceMessage || msg instanceof ChessEndValidateCheckMoveResp){
             Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
 
             lobbysessions.forEach(webSocketSession -> {
