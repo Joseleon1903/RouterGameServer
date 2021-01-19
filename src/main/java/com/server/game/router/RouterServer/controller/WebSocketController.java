@@ -21,4 +21,13 @@ public class WebSocketController {
         return "ws-broadcast";
     }
 
+    @RequestMapping("/privacy/policy/contract")
+    public String getPolicyContractWebSocket() {
+
+        String context = AppUtilContext.getBaseUrl();
+        logger.info("context: "+ context);
+
+        return "GamePolicyContractPage";
+    }
+
 }

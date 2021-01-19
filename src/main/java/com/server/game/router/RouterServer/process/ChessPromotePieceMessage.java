@@ -5,29 +5,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**\
- *   SimpleContentMessage common message from a player lobby
+ *   ChessCheckMateMessage notify opponet game win
+ *
  *
  *   content:
  *
- *    0             1               2         3           4        continue
- *    Origin | operation code| lobby code| game type |  data   |   .....
+ *    0             1               2         3              3              4             5
+ *    Origin | operation code| lobby code| game type |  piece type   |  piecePosX  |  piecePosY
  *
- *   CLIENT&102LB&QUEIO&data
+ *    CLIENT&102PL&QUEIO&CHESS&QUEEEN&0&7
  */
-public class SimpleContentMessage extends FactoryMessage {
+public class ChessPromotePieceMessage extends FactoryMessage{
 
-    Logger logger = LoggerFactory.getLogger(SimpleContentMessage.class);
+    Logger logger = LoggerFactory.getLogger(ChessPromotePieceMessage.class);
 
-    public SimpleContentMessage(String[] data, String sessionId){
+    public ChessPromotePieceMessage(String[] data, String sessionId){
         this.data = data;
         this.sessionId = sessionId;
     }
 
+
     @Override
     public String process() throws Exception {
-
         logger.info("Entering in method process");
-        logger.info("execute SimpleContentMessage");
+        logger.info("execute ChessPromotePieceMessage");
         logger.info("session Id "+ sessionId);
 
         //validation content data

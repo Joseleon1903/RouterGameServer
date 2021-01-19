@@ -4,30 +4,24 @@ import com.server.game.router.RouterServer.entity.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**\
- *   SimpleContentMessage common message from a player lobby
- *
- *   content:
- *
- *    0             1               2         3           4        continue
- *    Origin | operation code| lobby code| game type |  data   |   .....
- *
- *   CLIENT&102LB&QUEIO&data
+/**
+ * Created by jose de leon on 1/15/2021.
  */
-public class SimpleContentMessage extends FactoryMessage {
+public class ChessEndValidateCheckMoveResp extends FactoryMessage {
 
-    Logger logger = LoggerFactory.getLogger(SimpleContentMessage.class);
 
-    public SimpleContentMessage(String[] data, String sessionId){
+    Logger logger = LoggerFactory.getLogger(ChessCheckMateMessage.class);
+
+    public ChessEndValidateCheckMoveResp(String[] data, String sessionId){
         this.data = data;
         this.sessionId = sessionId;
     }
 
+
     @Override
     public String process() throws Exception {
-
         logger.info("Entering in method process");
-        logger.info("execute SimpleContentMessage");
+        logger.info("execute ChessEndValidateCheckMoveResp");
         logger.info("session Id "+ sessionId);
 
         //validation content data

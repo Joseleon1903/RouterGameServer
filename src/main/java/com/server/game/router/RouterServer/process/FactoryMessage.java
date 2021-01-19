@@ -40,6 +40,22 @@ public abstract class FactoryMessage {
             && data[1].equalsIgnoreCase("102LB")){
             return new SimpleContentMessage(data, sessionId);
         }
+
+        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PL")){
+            return new ChessCheckMateMessage(data, sessionId);
+        }
+
+        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PLPROMOTED")){
+            return new ChessPromotePieceMessage(data, sessionId);
+        }
+
+        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PLCHECK")){
+            return new ChessValidateCheckMove(data, sessionId);
+        }
+
+        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PLCHECKRESP")){
+            return new ChessEndValidateCheckMoveResp(data, sessionId);
+        }
         return null;
     }
 
