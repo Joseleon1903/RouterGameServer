@@ -13,4 +13,9 @@ public interface UserProfileService {
 
     UserProfile[] getProfileUsers();
 
+    void deleteProfileUser(long id);
+
+    UserProfile deleteProfileUser(UserProfile user);
+
+
 }

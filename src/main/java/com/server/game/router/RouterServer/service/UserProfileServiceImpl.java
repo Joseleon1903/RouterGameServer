@@ -59,5 +59,24 @@ public class UserProfileServiceImpl implements UserProfileService {
         return list.toArray(new UserProfile[0]);
     }
 
+    @Override
+    public void deleteProfileUser(long id) {
+        logger.info("Entering in method deleteProfileUser");
+        logger.info("param id: "+id);
+        logger.info("delete user information");
+        profileRepository.deleteById(id);
+        logger.info("finish Save tor Update user information");
+    }
+
+    @Override
+    public UserProfile deleteProfileUser(UserProfile user) {
+        logger.info("Entering in method deleteProfileUser");
+        logger.info("param id: "+user);
+        logger.info("delete user information");
+        profileRepository.delete(user);
+        logger.info("finish Save tor Update user information");
+        return user;
+    }
+
 
 }
