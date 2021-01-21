@@ -26,6 +26,58 @@
             <div class="container-fluid">
                 <h1 class="dash-title">Game Server Profiles List</h1>
 
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card easion-card">
+                            <div class="card-header">
+                                <div class="easion-card-icon">
+                                    <i class="fas fa-table"></i>
+                                </div>
+                                <div class="easion-card-title">Table Profile Manager</div>
+                            </div>
+                            <div class="card-body ">
+                                <table class="table table-hover table-in-card">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Facebook Id</th>
+                                        <th scope="col">Creation Date</th>
+                                        <th scope="col">Guest Id</th>
+                                        <th scope="col">Game Name</th>
+                                        <th scope="col">Language</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr  th:each="profile : ${ptofilesList}">
+                                        <th th:text="${profile.name}">1</th>
+                                        <td th:text="${profile.email}">Mark</td>
+                                        <td th:text="${profile.facebookUserId}">Otto</td>
+                                        <td th:text="${profile.creationDate}">@mdo</td>
+                                        <td th:text="${profile.guestUserId}">@mdo</td>
+                                        <td th:text="${profile.gameName}">@mdo</td>
+                                        <td th:text="${profile.language}">@mdo</td>
+                                        <form action="#" th:action="@{/game/server/profile/delete(id=${profile.id})}" method="post">
+                                            <td><button type="submit" class="btn btn-danger mb-1">Danger</button></td>
+                                        </form>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+                </div>
+
 
 
 

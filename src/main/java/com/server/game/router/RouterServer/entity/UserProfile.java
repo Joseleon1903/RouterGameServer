@@ -28,17 +28,17 @@ public class UserProfile {
     @Column(unique=true)
     private String guestUserId;
 
+    private String gameName;
+
     private String lastTokenInfoString;
     private String profilePicture;
 
     @Column(nullable = false)
     private String creationDate;
 
-    private int totalChessGame;
-    private int totalChessGameWin;
     private int totalCheckerGame;
     private int totalCheckerGameWin;
-    private String Language;
+    private String language;
     private boolean isGuest;
 
 }

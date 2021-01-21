@@ -7,8 +7,6 @@ Game server for Heroku service with Spring java webSocket.
 
     url: ws://localhost:8080/checker/lobby-manager
     
-    url: ws://localhost:8080/chess/lobby-manager
-
 
 ## create a lobby message 
 
