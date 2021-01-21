@@ -1,4 +1,4 @@
-package com.server.game.router.RouterServer.controller;
+package com.server.game.router.RouterServer.controller.page;
 
 import com.server.game.router.RouterServer.config.AppUtilContext;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ public class WebSocketController {
     Logger logger = LoggerFactory.getLogger(WebSocketController.class);
 
 
-    @RequestMapping({"/websocket", "/"})
+    @RequestMapping("/websocket")
     public String getWebSocket() {
 
         String context = AppUtilContext.getBaseUrl();
