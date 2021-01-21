@@ -1,4 +1,4 @@
-package com.server.game.router.RouterServer.controller;
+package com.server.game.router.RouterServer.controller.page;
 
 import com.server.game.router.RouterServer.service.LobbyService;
 import org.slf4j.Logger;
@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by jose eduardo on 9/30/2020.
  */
 @Controller
-public class LobbyPageController {
+public class LobbyControllerPage {
 
-    Logger logger = LoggerFactory.getLogger(LobbyPageController.class);
+    Logger logger = LoggerFactory.getLogger(LobbyControllerPage.class);
 
     @Autowired
     private LobbyService lobbyService;
 
-    @RequestMapping("/server/lobby")
-    public String getLobbyPage(Model model) {
-        logger.info("Entering in method loginPage..");
+    @RequestMapping("/game/server/lobby")
+    public String getCheckerLobbyPage(Model model) {
+        logger.info("Entering in method getCheckerLobbyPage..");
         model.addAttribute("lobbyBeanList",lobbyService.avaliableLobby());
-        return "LobbyPage";
+        return "CheckerGameLobbiesPage";
     }
 }

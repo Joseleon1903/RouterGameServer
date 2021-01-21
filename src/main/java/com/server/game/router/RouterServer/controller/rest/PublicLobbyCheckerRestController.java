@@ -1,4 +1,4 @@
-package com.server.game.router.RouterServer.controller;
+package com.server.game.router.RouterServer.controller.rest;
 
 import com.server.game.router.RouterServer.entity.Lobby;
 import com.server.game.router.RouterServer.enums.GameLobbyType;

@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="dash-nav-fragment" class="dash-nav dash-nav-dark">
+    <header>
+        <a href="#!" class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </a>
+        <a th:href="@{/game/server/dashboard}" class="easion-logo"><i class="fab fa-windows"></i> <span>Sea Lion Entertainment Studio</span></a>
+    </header>
+    <nav class="dash-nav-list">
+        <a th:href="@{/game/server/dashboard}" class="dash-nav-item"><i class="fas fa-home"></i> Dashboard </a>
+        <a th:href="@{/router/server/version}" class="dash-nav-item"><i class="fas fa-info-circle"></i> Server info </a>
+        <a th:href="@{/privacy/policy/contract}" class="dash-nav-item"><i class="fas fa-award"></i> Privacy Policy </a>
+    </nav>
+</div>
+</body>
+</html>

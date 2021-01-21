@@ -1,8 +1,7 @@
-package com.server.game.router.RouterServer.controller;
+package com.server.game.router.RouterServer.controller.rest;
 
 import com.server.game.router.RouterServer.entity.UserProfile;
 import com.server.game.router.RouterServer.service.UserProfileService;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
