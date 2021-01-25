@@ -22,7 +22,11 @@ public class ProfileRestController {
     @PostMapping("/user/profile/create")
     ResponseEntity<UserProfile> postProfileRestResource(@RequestBody UserProfile user) {
 
-        if(user.getFacebookUserId().isEmpty() && user.getGuestUserId().isEmpty()){
+        user.setGuest((user.getGuestUserId() !=null) ? true : false);
+        if(user.isGuest() && user.getGuestUserId().isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        else if(!user.isGuest() && user.getFacebookUserId().isEmpty()){
             return ResponseEntity.badRequest().build();
         }
         UserProfile userOut = userProfileService.saveOrUpdate(user);

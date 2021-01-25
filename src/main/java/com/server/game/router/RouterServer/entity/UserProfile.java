@@ -38,6 +38,7 @@ public class UserProfile {
 
     private int totalCheckerGame;
     private int totalCheckerGameWin;
+    private String nationality;
     private String language;
     private boolean isGuest;
 
