@@ -2,6 +2,7 @@ package com.server.game.router.RouterServer.process;
 
 import com.server.game.router.RouterServer.service.ClientService;
 import com.server.game.router.RouterServer.service.LobbyService;
+import com.server.game.router.RouterServer.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,8 @@ public abstract class FactoryMessage {
     protected ClientService clientService;
 
     protected LobbyService lobbyService;
+
+    protected UserProfileService userProfileService;
 
     public static FactoryMessage getMessage(String[] data, String sessionId){
 
@@ -41,28 +44,14 @@ public abstract class FactoryMessage {
             return new SimpleContentMessage(data, sessionId);
         }
 
-        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PL")){
-            return new ChessCheckMateMessage(data, sessionId);
-        }
-
-        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PLPROMOTED")){
-            return new ChessPromotePieceMessage(data, sessionId);
-        }
-
-        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PLCHECK")){
-            return new ChessValidateCheckMove(data, sessionId);
-        }
-
-        if(data[0].equalsIgnoreCase("CLIENT") && data[1].equalsIgnoreCase("102PLCHECKRESP")){
-            return new ChessEndValidateCheckMoveResp(data, sessionId);
-        }
         return null;
     }
 
     public abstract String process() throws Exception;
 
-    public void supplyService(ClientService clientService , LobbyService lobbyService){
+    public void supplyService(ClientService clientService , LobbyService lobbyService, UserProfileService userProfileService){
         this.lobbyService = lobbyService;
         this.clientService = clientService;
+        this.userProfileService = userProfileService;
     }
 }

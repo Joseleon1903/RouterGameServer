@@ -11,6 +11,8 @@ public interface UserProfileService {
 
     UserProfile getProfile(boolean isGuest, String id);
 
+    UserProfile getProfile(String playerId);
+
     UserProfile[] getProfileUsers();
 
     void deleteProfileUser(long id);

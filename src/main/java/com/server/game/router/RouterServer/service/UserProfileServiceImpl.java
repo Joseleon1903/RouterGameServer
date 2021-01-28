@@ -48,6 +48,21 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
+    public UserProfile getProfile(String playerId) {
+
+        logger.info("Entering in method getProfile");
+        logger.info("param playerId : "+playerId);
+
+        UserProfile profileoutput = null;
+        profileoutput = profileRepository.findByFacebookUserId(playerId);
+        if(profileoutput == null) {
+            profileoutput = profileRepository.findByGuestUserId(playerId);
+        }
+        logger.info("returning player found : "+profileoutput);
+        return profileoutput;
+    }
+
+    @Override
     public UserProfile[] getProfileUsers() {
         logger.info("Entering in method getProfileUsers");
         logger.info("get users profile ");

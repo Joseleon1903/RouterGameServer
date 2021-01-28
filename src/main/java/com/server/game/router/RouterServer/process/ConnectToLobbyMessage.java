@@ -1,6 +1,7 @@
 package com.server.game.router.RouterServer.process;
 
 import com.server.game.router.RouterServer.entity.Lobby;
+import com.server.game.router.RouterServer.entity.UserProfile;
 import com.server.game.router.RouterServer.entity.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,17 +80,28 @@ public class ConnectToLobbyMessage extends FactoryMessage {
         //add client to lobby count
         UserSession response2 = clientService.registerClient(cl);
 
+
+
         //if lobby is full after add new play start Game
         if(refLobby.getPlayerCount() == refLobby.getCapacity()){
 
             //prepare information for player one
             UserSession playerOne = clientService.findByPlayerCode("PL1", lobbyCode);
-            String playerOneInfo = "|PL1|"+playerOne.getPlayerName()+"|"+
-                                     playerOne.getPlayerId()+"|"+  playerOne.getNationality();
 
+            UserProfile profile1 = userProfileService.getProfile(playerOne.getPlayerId());
+            String playerOnePic = profile1.getProfilePicture();
+
+            String playerOneInfo = "|PL1|"+playerOne.getPlayerName()+"|"+
+                                     playerOne.getPlayerId()+"|"+  playerOne.getNationality()+"|"+playerOnePic;
+
+            //prepare information for player two
             UserSession playerTwo = clientService.findByPlayerCode("PL2", lobbyCode);
+
+            UserProfile profile2 = userProfileService.getProfile(playerTwo.getPlayerId());
+            String playerTwoPic = profile2.getProfilePicture();
+
             String playerTwoInfo = "|PL2|"+playerTwo.getPlayerName()+"|"+
-                    playerTwo.getPlayerId()+"|"+  playerTwo.getNationality();
+                    playerTwo.getPlayerId()+"|"+  playerTwo.getNationality()+"|"+playerTwoPic;
 
             return "SERVER|202LB|LOBBYREADY"+ playerOneInfo+playerTwoInfo;
         }

@@ -8,6 +8,7 @@ import com.server.game.router.RouterServer.process.*;
 import com.server.game.router.RouterServer.service.ClientService;
 import com.server.game.router.RouterServer.service.ConnectionService;
 import com.server.game.router.RouterServer.service.LobbyService;
+import com.server.game.router.RouterServer.service.UserProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private LobbyService lobbyService;
+
+    @Autowired
+    private UserProfileService userProfileService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -87,7 +91,7 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
         }
 
         FactoryMessage msg = FactoryMessage.getMessage(data, session.getId());
-        msg.supplyService(clientService, lobbyService);
+        msg.supplyService(clientService, lobbyService, userProfileService);
         String response = (msg != null) ?msg.process() : null;
 
         LOGGER.info("Response fro process: "+response);
