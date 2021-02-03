@@ -2,6 +2,7 @@ package com.server.game.router.RouterServer.controller.rest;
 
 import com.server.game.router.RouterServer.entity.Lobby;
 import com.server.game.router.RouterServer.enums.GameLobbyType;
+import com.server.game.router.RouterServer.exceptionhandler.UnexpectedException;
 import com.server.game.router.RouterServer.service.LobbyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,9 @@ public class PublicLobbyCheckerRestController {
 
     @GetMapping("/checker/lobby/testdata")
     ResponseEntity setServerPublicLobbyTestData() {
-       lobbyService.setPublicCheckersLobbyTestData(GameLobbyType.CHECKER);
+        if(true){
+            throw new UnexpectedException();
+        }
        return ResponseEntity.ok("OK");
     }
 

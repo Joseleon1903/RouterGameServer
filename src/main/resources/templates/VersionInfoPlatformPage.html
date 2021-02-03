@@ -24,13 +24,43 @@
     <div class="dash-app" style="margin-left: 380px; margin-top: 5px;">
 
         <main class="dash-content">
-            <div class="container-fluid">
-                <h1 class="dash-title">Game Server Version Info</h1>
 
+            <main class="dash-content">
+                <div class="container-fluid">
+                    <h1 class="dash-title">Game Server Version Info</h1>
+                    <div class="row">
 
+                        <div class="col-xl-6">
+                            <div class="card easion-card">
+                                <div class="card-header">
+                                    <div class="easion-card-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="easion-card-title">Server Information</div>
+                                </div>
+                                <div class="card-body">
+                                    <h3>Server</h3>
+                                    <!--<p th:text="Server name: ${informationBean.serverName}" >Server name: </p>-->
+                                    <!--<p th:text="Server Version: ${informationBean.serverVersion}">Server Version: </p>-->
+                                    <!--<p th:text="Base Domain: ${informationBean.baseDomain}">Base Domain: </p>-->
 
+                                    <h4>Server name: <p th:text="${informationBean.serverName}"></p> </h4>
+                                    <h4>Server Version: <p th:text="${informationBean.serverVersion}"></p> </h4>
+                                    <h4>Base Domain: <p th:text="${informationBean.baseDomain}"></p></h4>
 
-            </div>
+                                    <h3>Web App</h3>
+                                    <h4>App name: <p th:text="${informationBean.appName}"></p></h4>
+                                    <h4>App Version : <p th:text="${informationBean.appVersion}"></p></h4>
+                                    <h4>App Rest Base Domain: <p th:text="${informationBean.appRestBaseDomain}"></p></h4>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </main>
         </main>
     </div>
 

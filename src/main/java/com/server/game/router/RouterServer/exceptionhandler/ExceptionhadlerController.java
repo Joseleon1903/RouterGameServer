@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class ExceptionhadlerController extends ResponseEntityExceptionHandler {
     Logger logger = LoggerFactory.getLogger(ExceptionhadlerController.class);
 
     @ExceptionHandler({DbException.class,JdbcSQLIntegrityConstraintViolationException.class})
-    public final ResponseEntity<Object> handleExceptionsDatabase() {
+    public ResponseEntity<Object> handleExceptionsDatabase() {
         JSONObject jo = new JSONObject();
         Date time = new Date();
         jo.put("timestamp", time.toString());
@@ -32,13 +33,12 @@ public class ExceptionhadlerController extends ResponseEntityExceptionHandler {
         return new ResponseEntity(jo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        JSONObject jsonObject = new JSONObject();
-        Date time = new Date();
-        jsonObject.put("timestamp", time.toString());
-        jsonObject.put("status", "500");
-        jsonObject.put("error", "Internal Server Error");
-        return ResponseEntity.ok(jsonObject);
+    @ExceptionHandler(UnexpectedException.class)
+    public ModelAndView handleMyException(UnexpectedException mex) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("errCode", mex.getErrCode());
+        model.addObject("errMsg", mex.getErrMsg());
+        model.setViewName("error/GeneralPageError");
+        return model;
     }
 }
