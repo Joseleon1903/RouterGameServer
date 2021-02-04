@@ -3,8 +3,6 @@ package com.server.game.router.RouterServer.process;
 import com.server.game.router.RouterServer.service.ClientService;
 import com.server.game.router.RouterServer.service.LobbyService;
 import com.server.game.router.RouterServer.service.UserProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by jose eduardo on 9/30/2020.
@@ -37,6 +35,10 @@ public abstract class FactoryMessage {
 
         if(data[0].equalsIgnoreCase("CLIENT")  && data[1].equalsIgnoreCase("300LB")){
             return new RematchGameMessage(data, sessionId);
+        }
+
+        if(data[0].equalsIgnoreCase("CLIENT")  && data[1].equalsIgnoreCase("100GW")){
+            return new VictoryGameMessage(data, sessionId);
         }
 
         if(data[0].equalsIgnoreCase("CLIENT") || data[0].equalsIgnoreCase("SERVER")

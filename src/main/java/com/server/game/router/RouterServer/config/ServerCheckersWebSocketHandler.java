@@ -151,7 +151,23 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
                 }
             });
 
-        }else if(msg instanceof SimpleContentMessage || msg instanceof RematchGameMessage){
+        } else if(msg instanceof VictoryGameMessage){
+
+            Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
+
+            lobbysessions.forEach(webSocketSession -> {
+                try {
+                    TextMessage messageOut = new TextMessage(response);
+                    //for duplicate message omit current session
+                    if(webSocketSession.getId() != session.getId()){
+                        webSocketSession.sendMessage(messageOut);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }else if(msg instanceof SimpleContentMessage){
             Set<WebSocketSession> lobbysessions = lobbySessionListener.get(data[2]);
 
             lobbysessions.forEach(webSocketSession -> {
