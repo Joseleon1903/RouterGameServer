@@ -36,6 +36,7 @@ public class UserProfile {
     @Column(nullable = false)
     private String creationDate;
 
+    private String playerCoins;
     private int totalCheckerGame;
     private int totalCheckerGameWin;
     private String nationality;

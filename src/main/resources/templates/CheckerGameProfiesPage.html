@@ -27,6 +27,31 @@
             <div class="container-fluid">
                 <h1 class="dash-title">Game Server Profiles List</h1>
 
+                <!--//delete profile in range of date-->
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <form>
+
+                            <label for="startDate">Start date:</label>
+
+                            <input type="date" id="startDate" name="date-start"
+                                   value="2018-07-22"
+                                   min="2018-01-01" max="2018-12-31">
+
+                            <label for="endDate"> date:</label>
+
+                            <input type="date" id="endDate" name="date-end"
+                                   value="2018-07-22"
+                                   min="2018-01-01" max="2018-12-31">
+
+                            <button type="submit" class="btn btn-danger mb-1">Delete Profile</button>
+
+                        </form>
+                    </div>
+
+                </div>
+
                 <div class="row">
                     <div class="col-lg-12">
 
@@ -48,6 +73,7 @@
                                         <th scope="col">Guest Id</th>
                                         <th scope="col">Game Name</th>
                                         <th scope="col">Language</th>
+                                        <th scope="col">Nationality</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
@@ -60,6 +86,7 @@
                                         <td th:text="${profile.guestUserId}">@mdo</td>
                                         <td th:text="${profile.gameName}">@mdo</td>
                                         <td th:text="${profile.language}">@mdo</td>
+                                        <td th:text="${profile.nationality}">@mdo</td>
                                         <form action="#" th:action="@{/game/server/profile/delete(id=${profile.id})}" method="post">
                                             <td><button type="submit" class="btn btn-danger mb-1">Delete</button></td>
                                         </form>

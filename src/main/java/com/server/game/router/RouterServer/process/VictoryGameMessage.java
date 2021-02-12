@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
  *
  *   content:
  *
- *    0             1               2         3           4
- *    Origin | operation code| lobby code| game type |  playerWin
+ *    0             1               2         3           4            5
+ *    Origin | operation code| lobby code| game type | gameOverType| playerWin
  *
  *   CLIENT&102LB&QUEIO&P1
  */
@@ -61,7 +61,7 @@ public class VictoryGameMessage extends FactoryMessage {
             return "500:INVALIDLOBBY";
         }
 
-        String message = data[0]+"&"+data[1]+"&"+data[2]+"&"+ data[3] +"&"+data[4];
+        String message = data[0]+"&"+data[1]+"&"+data[2]+"&"+ data[3] +"&"+data[4]+"&"+data[5];
         logger.info("Message: "+ message);
         return message;    }
 }

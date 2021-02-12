@@ -33,6 +33,8 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
 
     private final HashMap< String, Set<WebSocketSession>> lobbySessionListener = new HashMap<>();
 
+    private final Set<WebSocketSession> allActiveLobbySession = new HashSet<>();
+
     @Autowired
     private ConnectionService connectionService;
 
@@ -50,6 +52,8 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
         LOGGER.info("Someone has connect to the server....");
 
         connectionService.NotifySessionConnection(session);
+
+        allActiveLobbySession.add(session);
 
         super.afterConnectionEstablished(session);
     }
@@ -74,6 +78,9 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
             connectionService.NotifyLobbyClose(user.getLobbyClient());
             lobbySessionListener.remove(user.getLobbyClient());
         }
+
+        allActiveLobbySession.remove(session);
+
         super.afterConnectionClosed(session, status);
     }
 
