@@ -76,6 +76,10 @@ public class CreateLobbyFactoryMessage extends FactoryMessage {
 
         clientService.registerClient(userHost);
         logger.info("lobby successful create");
-        return "CLIENT|201LB|OK";
+
+        String[] dataLobby = {lb.getLobbyMap(), lb.getLobbyTime(), lb.getLobbyCode(),lb.getLobbyBet()  };
+        String lobbyCreated =dataLobby[0] +"&"+ dataLobby[1]+"&"+ dataLobby[2]+ "&"+dataLobby[3];
+
+        return "SERVER&201LB&OK&"+lobbyCreated;
     }
 }

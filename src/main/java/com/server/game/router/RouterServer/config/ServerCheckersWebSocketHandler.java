@@ -105,14 +105,30 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
 
         if(response != null && msg instanceof CreateLobbyFactoryMessage){
 
+            LOGGER.info("Created new game lobby ....");
             Set<WebSocketSession> sesData = new HashSet<>();
             lobbySessionListener.put(data[3], sesData);
-            TextMessage respone = new TextMessage(response);
-            session.sendMessage(respone);
+
+            //Notify all player new public lobby created
+            allActiveLobbySession.forEach(webSocketSession -> {
+                try {
+                    TextMessage messageOut = new TextMessage(response);
+                    webSocketSession.sendMessage(messageOut);
+                } catch (IOException e) {
+                    LOGGER.info("Error: "+ e.getMessage());
+                }
+            });
+
 
         }else if(response != null && msg instanceof ConnectToLobbyMessage){
 
             if(response.contains("BADLOBBYCODE")){
+                TextMessage messageOut = new TextMessage(response);
+                session.sendMessage(messageOut);
+                return;
+            }
+
+            if(response.contains("FULLLOBBYCODE")){
                 TextMessage messageOut = new TextMessage(response);
                 session.sendMessage(messageOut);
                 return;
