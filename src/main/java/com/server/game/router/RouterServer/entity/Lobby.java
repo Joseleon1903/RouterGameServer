@@ -32,6 +32,7 @@ public class Lobby {
 
     private String lobbyTime;
 
-    private String gameLobby;
+    private String lobbyBet;
 
+    private String gameLobby;
 }

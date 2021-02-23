@@ -13,8 +13,8 @@ import java.util.List;
  *
  *   content:
  *
- *    0             1               2          3        4             5                6            7           8             9
- *    Origin | operation code| lobby type| lobby code|lobby Map| lobby time|  lobby capacity| gametype lobby Identifier| lobby status
+ *    0             1               2          3        4             5                6            7           8             9              10
+ *    Origin | operation code| lobby type| lobby code|lobby Map| lobby time|  lobby capacity| gametype lobby Identifier| lobby status | lobbyCoinReward
  *
  *    CLIENT&202LB&Public&GYTQE&PL2&GuestPlayer051072&8846074&Dominican Republic&UN:IDENT:FIER&0
  */
@@ -61,6 +61,7 @@ public class CreateLobbyFactoryMessage extends FactoryMessage {
         lb.setPlayerCount(playerCount);
         lb.setStatus(data[9]);
         lb.setType(data[2]);
+        lb.setLobbyBet(data[10]);
         lb.setSessionIdentifier(sessionId);
         lb.setGameLobby(data[7]);
 
