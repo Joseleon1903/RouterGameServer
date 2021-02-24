@@ -62,24 +62,35 @@ public class ServerCheckersWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         LOGGER.info("Someone has disconnect from the server....");
 
+        allActiveLobbySession.remove(session);
+
         UserSession user = connectionService.NotifySessionDisconnection(session);
-        if(user.getLobbyClient() != null && user.getLobbyClient().length() >= 4 && !user.getIsHost() ){
-            lobbySessionListener.get(user.getLobbyClient()).remove(session);
-        }
-        if(lobbySessionListener.get(user.getLobbyClient()) != null && lobbySessionListener.get(user.getLobbyClient()).size() > 0){
+
+        //validate has part of a lobby conccurrent modification exception when player host lost connection
+        if(user.getLobbyClient() != null && lobbySessionListener.get(user.getLobbyClient()) != null){
+
+            if(lobbySessionListener.get(user.getLobbyClient()).contains(session)){
+                lobbySessionListener.get(user.getLobbyClient()).remove(session);
+            }
+
             for (WebSocketSession ses: lobbySessionListener.get(user.getLobbyClient())) {
-                if(ses.isOpen()) {
-                    String disconectMessage = "SERVER|102LB|CONNECTIONLOST";
-                    TextMessage messageOut = new TextMessage(disconectMessage);
-                    ses.sendMessage(messageOut);
+
+                if(ses.getId() != session.getId()){
+
+                    if(ses.isOpen()){
+                        String disconectMessage = "SERVER|102LB|CONNECTIONLOST";
+                        TextMessage messageOut = new TextMessage(disconectMessage);
+                        ses.sendMessage(messageOut);
+                    }
                 }
             }
-        }else if (lobbySessionListener.get(user.getLobbyClient()) != null && lobbySessionListener.get(user.getLobbyClient()).size() == 0){
+
+        }
+
+        if(user.getIsHost() && lobbySessionListener.get(user.getLobbyClient()) != null && lobbySessionListener.get(user.getLobbyClient()).size() == 0){
             connectionService.NotifyLobbyClose(user.getLobbyClient());
             lobbySessionListener.remove(user.getLobbyClient());
         }
-
-        allActiveLobbySession.remove(session);
 
         super.afterConnectionClosed(session, status);
     }

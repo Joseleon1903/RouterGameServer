@@ -89,6 +89,11 @@ public class ConnectToLobbyMessage extends FactoryMessage {
             UserSession playerOne = clientService.findByPlayerCode("PL1", lobbyCode);
 
             UserProfile profile1 = userProfileService.getProfile(playerOne.getPlayerId());
+
+            if(profile1 == null){
+                return "ERROR|202LB|BADLOBBYCODE";
+            }
+
             String playerOnePic = profile1.getProfilePicture();
 
             String playerOneInfo = "|PL1|"+playerOne.getPlayerName()+"|"+
@@ -98,6 +103,11 @@ public class ConnectToLobbyMessage extends FactoryMessage {
             UserSession playerTwo = clientService.findByPlayerCode("PL2", lobbyCode);
 
             UserProfile profile2 = userProfileService.getProfile(playerTwo.getPlayerId());
+
+            if(profile2 == null){
+                return "ERROR|202LB|BADLOBBYCODE";
+            }
+
             String playerTwoPic = profile2.getProfilePicture();
 
             String playerTwoInfo = "|PL2|"+playerTwo.getPlayerName()+"|"+
