@@ -5,20 +5,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**\
- *   SimpleContentMessage common message from a player lobby
+ *   ChessValidateCheckMove validate player checker possible move
  *
  *   content:
  *
- *    0             1               2         3           4        continue
- *    Origin | operation code| lobby code| game type |  data   |   .....
+ *    0             1               2         3           4               continue
+ *    Origin | operation code| lobby code| game type |  isplayerCheck  |   .....
  *
- *   CLIENT&102LB&QUEIO&data
+ *   CLIENT&102PLCHECK&QUEIO&data
  */
-public class SimpleContentMessage extends FactoryMessage {
+public class ChessValidateCheckMove extends FactoryMessage{
 
-    Logger logger = LoggerFactory.getLogger(SimpleContentMessage.class);
 
-    public SimpleContentMessage(String[] data, String sessionId){
+    Logger logger = LoggerFactory.getLogger(ChessValidateCheckMove.class);
+
+    public ChessValidateCheckMove(String[] data, String sessionId){
         this.data = data;
         this.sessionId = sessionId;
     }
@@ -27,7 +28,7 @@ public class SimpleContentMessage extends FactoryMessage {
     public String process() throws Exception {
 
         logger.info("Entering in method process");
-        logger.info("execute SimpleContentMessage");
+        logger.info("execute ChessValidateCheckMove");
         logger.info("session Id "+ sessionId);
 
         //validation content data
@@ -59,6 +60,7 @@ public class SimpleContentMessage extends FactoryMessage {
             logger.info("error lobby is invalid");
             return "500:INVALIDLOBBY";
         }
+
 
         return null;
     }
